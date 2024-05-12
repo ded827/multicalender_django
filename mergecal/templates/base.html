@@ -1,4 +1,4 @@
-{% load static i18n %}<!DOCTYPE html>
+{% load static i18n compress %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -37,15 +37,15 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer" />
 
+    {% compress css %}
     <!-- This file stores project-specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
-    {% endblock %}
+    {% endcompress %}
+    {% endblock css %}
     <!-- Le javascript
     ================================================== -->
     {# Placed at the top of the document so pages load faster with defer #}
     {% block javascript %}
-      <!-- Bootstrap JS -->
-      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <!-- Your stuff: Third-party javascript libraries go here -->
       <!-- Google tag (gtag.js) -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-1TQF9JJ9Z3"></script>
@@ -75,14 +75,16 @@
       <script src="https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js" integrity="sha256-uotVKltUv5neKsIlZxrxUccba0PaptusFj6p+w8Sons=" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js" integrity="sha256-J37ZtjEw94oWBNZ9w/XC73raGXE9t10//XHJfKz2QCM=" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.10/index.global.min.js" integrity="sha256-io4G+JpruJtt8SoSUOgLQrhBj/YtQXFgIvkGzBxQAUQ=" crossorigin="anonymous"></script>
+      {% compress js %}
       <script defer src="{% static 'js/project.js' %}"></script>
+      {% endcompress %}
 
     {% endblock javascript %}
 
   </head>
 
-  <body>
-
+  <body class="{% block bodyclass %}{% endblock bodyclass %}">
+    {% block body %}
     <div class="mb-1">
       <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
@@ -159,12 +161,14 @@
         {% endfor %}
       </div>
 
+      {% block main %}
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
+      {% endblock main %}
 
     </div> <!-- /container -->
-
+    {% endblock body %}
     {% block modal %}{% endblock modal %}
 
     {% block inline_javascript %}
